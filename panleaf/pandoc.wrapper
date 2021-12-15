@@ -1,0 +1,2 @@
+#!/bin/bash
+exec pandoc $@ 2>output.log
