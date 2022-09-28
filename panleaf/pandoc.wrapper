@@ -1,2 +1,8 @@
 #!/bin/bash
-exec pandoc $@ 2>output.log
+if [ -f config.yaml ] && [ $(cat config.yaml | grep "panleaf-texmk" | wc -l) -ge 1 ]
+then
+	pandoc $1 -dconfig -o output.tex 2>output.log
+	latexmk -cd -f -jobname=output -auxdir=$PWD -outdir=$PWD -synctex=1 -shell-escape -interaction=batchmode -xelatex output.tex
+else
+	exec pandoc $@ 2>output.log
+fi
